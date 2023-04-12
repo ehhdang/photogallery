@@ -1,4 +1,5 @@
 echo "Starting to deploy docker image.."
+source ~/.bashrc
 DOCKER_IMAGE=acatnamedsummer/photogalleryflaskapp:latest
 docker pull $DOCKER_IMAGE
 docker rm -f $(docker ps -aq)
