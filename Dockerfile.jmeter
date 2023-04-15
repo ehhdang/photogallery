@@ -1,0 +1,88 @@
+FROM openjdk:11-jre
+
+# define the environment variables
+ARG APP_PUBLIC_IP
+ARG JMETER_BUCKET_NAME
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
+
+# install wget and unzip and jmeter and zip
+RUN apt-get update && apt-get install -y wget unzip zip
+
+# install awscli
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+    && unzip awscliv2.zip \
+    && ./aws/install \
+    && rm awscliv2.zip \
+    && rm -rf ./aws/*v1* \
+    && echo "export PATH=$PATH:/usr/local/bin/aws" >> ~/.bashrc
+
+# download JMeter, extract it, and delete the zip file, and add it to the PATH
+RUN wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.5.tgz \
+    && tar -xzf apache-jmeter-5.5.tgz \
+    && rm apache-jmeter-5.5.tgz \
+    && ln -s /apache-jmeter-5.5/bin/jmeter /usr/sbin/jmeter \
+    && echo "export PATH=$PATH:/usr/sbin" >> ~/.bashrc
+
+# add JMMeter plan "Photo-Gallery-Test-Plan.jmx" to the container
+ADD Photo-Gallery-Test-Plan.jmx /Photo-Gallery-Test-Plan.jmx
+
+# run the JMeter plan in non-GUI mode
+RUN jmeter -n -t /Photo-Gallery-Test-Plan.jmx \
+    -l /data.csv \
+    -JPhotogalleryAddress=${APP_PUBLIC_IP} \
+    -JOutputPath=/data.csv
+
+# wait 5 seconds, then run again
+RUN sleep 5
+RUN jmeter -n -t /Photo-Gallery-Test-Plan.jmx \
+    -l /data.csv \
+    -JPhotogalleryAddress=${APP_PUBLIC_IP} \
+    -JOutputPath=/data.csv
+
+# wait 5 seconds, then run again
+RUN sleep 5
+RUN jmeter -n -t /Photo-Gallery-Test-Plan.jmx \
+    -l /data.csv \
+    -JPhotogalleryAddress=${APP_PUBLIC_IP} \
+    -JOutputPath=/data.csv
+
+# wait 5 seconds, then run again
+RUN sleep 5
+RUN jmeter -n -t /Photo-Gallery-Test-Plan.jmx \
+    -l /data.csv \
+    -JPhotogalleryAddress=${APP_PUBLIC_IP} \
+    -JOutputPath=/data.csv
+
+# wait 5 seconds, then run again
+RUN sleep 5
+RUN jmeter -n -t /Photo-Gallery-Test-Plan.jmx \
+    -l /data.csv \
+    -JPhotogalleryAddress=${APP_PUBLIC_IP} \
+    -JOutputPath=/data.csv
+
+# wait 5 seconds, then run again
+RUN sleep 5
+RUN jmeter -n -t /Photo-Gallery-Test-Plan.jmx \
+    -l /data.csv \
+    -JPhotogalleryAddress=${APP_PUBLIC_IP} \
+    -JOutputPath=/data.csv
+
+# make a directory 'dashboard'
+RUN mkdir dashboard
+
+# execute the command 'jmeter -g ~/data.csv -o dashboard'
+RUN jmeter -g /data.csv -o /dashboard
+
+# zip the dashboard directory
+RUN zip -r dashboard.zip dashboard
+
+# push the dashboard.zip file to the S3 bucket
+ENV AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+ENV JMETER_BUCKET_PATH=s3://${JMETER_BUCKET_NAME}/
+
+# RUN aws s3 cp dashboard.zip s3://${JMETER_BUCKET_NAME} --region us-east-2
+
+# push the dashboard.zip file to the S3 bucket
+CMD aws s3 cp dashboard.zip ${JMETER_BUCKET_PATH} --region us-east-2

@@ -3,3 +3,8 @@
 
 # ignore all files in local directory
 local/
+
+Jenkinsfile
+
+# ignore all __pychache__ directories
+**/__pycache__/
