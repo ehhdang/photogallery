@@ -28,45 +28,38 @@ RUN wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.5.tgz \
 ADD Photo-Gallery-Test-Plan.jmx /Photo-Gallery-Test-Plan.jmx
 
 # run the JMeter plan in non-GUI mode
-RUN jmeter -n -t /Photo-Gallery-Test-Plan.jmx \
-    -l /data.csv \
-    -JPhotogalleryAddress=${APP_PUBLIC_IP} \
-    -JOutputPath=/data.csv
+RUN jmeter -n -JPhotogalleryAddress=${APP_PUBLIC_IP} \
+    -JOutputPath=/data.csv \
+    -t /Photo-Gallery-Test-Plan.jmx \
+    -l /data.csv
 
 # wait 5 seconds, then run again
 RUN sleep 5
-RUN jmeter -n -t /Photo-Gallery-Test-Plan.jmx \
-    -l /data.csv \
-    -JPhotogalleryAddress=${APP_PUBLIC_IP} \
-    -JOutputPath=/data.csv
+RUN jmeter -n -JPhotogalleryAddress=${APP_PUBLIC_IP} \
+    -JOutputPath=/data.csv \
+    -t /Photo-Gallery-Test-Plan.jmx \
+    -l /data.csv
 
 # wait 5 seconds, then run again
 RUN sleep 5
-RUN jmeter -n -t /Photo-Gallery-Test-Plan.jmx \
-    -l /data.csv \
-    -JPhotogalleryAddress=${APP_PUBLIC_IP} \
-    -JOutputPath=/data.csv
+RUN jmeter -n -JPhotogalleryAddress=${APP_PUBLIC_IP} \
+    -JOutputPath=/data.csv \
+    -t /Photo-Gallery-Test-Plan.jmx \
+    -l /data.csv
 
 # wait 5 seconds, then run again
 RUN sleep 5
-RUN jmeter -n -t /Photo-Gallery-Test-Plan.jmx \
-    -l /data.csv \
-    -JPhotogalleryAddress=${APP_PUBLIC_IP} \
-    -JOutputPath=/data.csv
+RUN jmeter -n -JPhotogalleryAddress=${APP_PUBLIC_IP} \
+    -JOutputPath=/data.csv \
+    -t /Photo-Gallery-Test-Plan.jmx \
+    -l /data.csv
 
 # wait 5 seconds, then run again
 RUN sleep 5
-RUN jmeter -n -t /Photo-Gallery-Test-Plan.jmx \
-    -l /data.csv \
-    -JPhotogalleryAddress=${APP_PUBLIC_IP} \
-    -JOutputPath=/data.csv
-
-# wait 5 seconds, then run again
-RUN sleep 5
-RUN jmeter -n -t /Photo-Gallery-Test-Plan.jmx \
-    -l /data.csv \
-    -JPhotogalleryAddress=${APP_PUBLIC_IP} \
-    -JOutputPath=/data.csv
+RUN jmeter -n -JPhotogalleryAddress=${APP_PUBLIC_IP} \
+    -JOutputPath=/data.csv \
+    -t /Photo-Gallery-Test-Plan.jmx \
+    -l /data.csv
 
 # make a directory 'dashboard'
 RUN mkdir dashboard
@@ -86,3 +79,5 @@ ENV JMETER_BUCKET_PATH=s3://${JMETER_BUCKET_NAME}/
 
 # push the dashboard.zip file to the S3 bucket
 CMD aws s3 cp dashboard.zip ${JMETER_BUCKET_PATH} --region us-east-2
+
+# CMD /bin/bash
