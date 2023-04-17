@@ -4,7 +4,7 @@
 # ignore all files in local directory
 local/
 
-Jenkinsfile
+Jenkinsfile-local
 
 # ignore all __pychache__ directories
 **/__pycache__/
