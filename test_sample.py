@@ -1,5 +1,4 @@
 from app import app # Flask instance of the API
-import timeit
     
  
 def test_index_route():
