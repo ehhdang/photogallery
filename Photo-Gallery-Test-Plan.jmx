@@ -16,7 +16,7 @@
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">10</stringProp>
+          <stringProp name="LoopController.loops">1</stringProp>
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">100</stringProp>
         <stringProp name="ThreadGroup.ramp_time">1</stringProp>
@@ -356,6 +356,15 @@
         </InterleaveControl>
         <hashTree>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request - Add Photo large" enabled="true">
+            <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
+              <collectionProp name="HTTPFileArgs.files">
+                <elementProp name="/Users/jackkelly/Desktop/Large.jpg" elementType="HTTPFileArg">
+                  <stringProp name="File.mimetype">image/jpeg</stringProp>
+                  <stringProp name="File.path">/Users/jackkelly/Desktop/Large.jpg</stringProp>
+                  <stringProp name="File.paramname">imagefile</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments">
                 <elementProp name="title" elementType="HTTPArgument">
@@ -378,15 +387,6 @@
                   <stringProp name="Argument.value">large</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-              </collectionProp>
-            </elementProp>
-            <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
-              <collectionProp name="HTTPFileArgs.files">
-                <elementProp name="/Users/jackkelly/Desktop/Large.jpg" elementType="HTTPFileArg">
-                  <stringProp name="File.mimetype">image/jpeg</stringProp>
-                  <stringProp name="File.path">/Users/jackkelly/Desktop/Large.jpg</stringProp>
-                  <stringProp name="File.paramname">imagefile</stringProp>
                 </elementProp>
               </collectionProp>
             </elementProp>
@@ -716,6 +716,15 @@
             <hashTree/>
           </hashTree>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request - Add Photo medium" enabled="true">
+            <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
+              <collectionProp name="HTTPFileArgs.files">
+                <elementProp name="/Users/jackkelly/Desktop/Medium.jpg" elementType="HTTPFileArg">
+                  <stringProp name="File.mimetype">image/jpeg</stringProp>
+                  <stringProp name="File.path">/Users/jackkelly/Desktop/Medium.jpg</stringProp>
+                  <stringProp name="File.paramname">imagefile</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments">
                 <elementProp name="title" elementType="HTTPArgument">
@@ -738,15 +747,6 @@
                   <stringProp name="Argument.value">medium</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-              </collectionProp>
-            </elementProp>
-            <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
-              <collectionProp name="HTTPFileArgs.files">
-                <elementProp name="/Users/jackkelly/Desktop/Medium.jpg" elementType="HTTPFileArg">
-                  <stringProp name="File.mimetype">image/jpeg</stringProp>
-                  <stringProp name="File.path">/Users/jackkelly/Desktop/Medium.jpg</stringProp>
-                  <stringProp name="File.paramname">imagefile</stringProp>
                 </elementProp>
               </collectionProp>
             </elementProp>
@@ -1076,6 +1076,15 @@
             <hashTree/>
           </hashTree>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request - Add Photo small" enabled="true">
+            <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
+              <collectionProp name="HTTPFileArgs.files">
+                <elementProp name="/Users/jackkelly/Desktop/Small.jpg" elementType="HTTPFileArg">
+                  <stringProp name="File.mimetype">image/jpeg</stringProp>
+                  <stringProp name="File.path">/Users/jackkelly/Desktop/Small.jpg</stringProp>
+                  <stringProp name="File.paramname">imagefile</stringProp>
+                </elementProp>
+              </collectionProp>
+            </elementProp>
             <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" enabled="true">
               <collectionProp name="Arguments.arguments">
                 <elementProp name="title" elementType="HTTPArgument">
@@ -1098,15 +1107,6 @@
                   <stringProp name="Argument.value">small</stringProp>
                   <stringProp name="Argument.metadata">=</stringProp>
                   <boolProp name="HTTPArgument.use_equals">true</boolProp>
-                </elementProp>
-              </collectionProp>
-            </elementProp>
-            <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
-              <collectionProp name="HTTPFileArgs.files">
-                <elementProp name="/Users/jackkelly/Desktop/Small.jpg" elementType="HTTPFileArg">
-                  <stringProp name="File.mimetype">image/jpeg</stringProp>
-                  <stringProp name="File.path">/Users/jackkelly/Desktop/Small.jpg</stringProp>
-                  <stringProp name="File.paramname">imagefile</stringProp>
                 </elementProp>
               </collectionProp>
             </elementProp>
@@ -1739,7 +1739,8 @@
           <stringProp name="CounterConfig.incr">1</stringProp>
           <stringProp name="CounterConfig.name">ctr</stringProp>
           <stringProp name="CounterConfig.format"></stringProp>
-          <boolProp name="CounterConfig.per_user">false</boolProp>
+          <boolProp name="CounterConfig.per_user">true</boolProp>
+          <boolProp name="CounterConfig.reset_on_tg_iteration">true</boolProp>
         </CounterConfig>
         <hashTree/>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request - Get image" enabled="true">
