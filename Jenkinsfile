@@ -67,6 +67,14 @@ pipeline {
                 sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "chmod +x deploy.sh"'
                 sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "MYSQL_ROOT_PASSWORD=\'${DB_PASSWORD}\' MYSQL_DATABASE=\'${DB_NAME}\' sh ./deploy.sh"'
             }
-    }
+        }
+        stage('Benchmark Test') {
+            // run the unit tests
+            steps {
+                script{
+                    sh "python -m pytest test_sample.py"
+                }
+            }
+        }
     }
 }
