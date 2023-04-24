@@ -80,4 +80,14 @@ pipeline {
             }
         }
     }
+     stage('Benchmark Test') {
+            // run the unit tests
+            steps {
+                script{
+                    sh "python -m pytest test_sample.py"
+                }
+            }
+        }
+
+    }
 }
