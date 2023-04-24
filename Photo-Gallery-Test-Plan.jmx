@@ -358,9 +358,9 @@
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request - Add Photo large" enabled="true">
             <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
               <collectionProp name="HTTPFileArgs.files">
-                <elementProp name="/Users/jackkelly/Desktop/Large.jpg" elementType="HTTPFileArg">
+                <elementProp name="./Large.jpg" elementType="HTTPFileArg">
                   <stringProp name="File.mimetype">image/jpeg</stringProp>
-                  <stringProp name="File.path">/Users/jackkelly/Desktop/Large.jpg</stringProp>
+                  <stringProp name="File.path">./Large.jpg</stringProp>
                   <stringProp name="File.paramname">imagefile</stringProp>
                 </elementProp>
               </collectionProp>
@@ -718,9 +718,9 @@
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request - Add Photo medium" enabled="true">
             <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
               <collectionProp name="HTTPFileArgs.files">
-                <elementProp name="/Users/jackkelly/Desktop/Medium.jpg" elementType="HTTPFileArg">
+                <elementProp name="./Medium.jpg" elementType="HTTPFileArg">
                   <stringProp name="File.mimetype">image/jpeg</stringProp>
-                  <stringProp name="File.path">/Users/jackkelly/Desktop/Medium.jpg</stringProp>
+                  <stringProp name="File.path">./Medium.jpg</stringProp>
                   <stringProp name="File.paramname">imagefile</stringProp>
                 </elementProp>
               </collectionProp>
@@ -1078,9 +1078,9 @@
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="HTTP Request - Add Photo small" enabled="true">
             <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
               <collectionProp name="HTTPFileArgs.files">
-                <elementProp name="/Users/jackkelly/Desktop/Small.jpg" elementType="HTTPFileArg">
+                <elementProp name="./Small.jpg" elementType="HTTPFileArg">
                   <stringProp name="File.mimetype">image/jpeg</stringProp>
-                  <stringProp name="File.path">/Users/jackkelly/Desktop/Small.jpg</stringProp>
+                  <stringProp name="File.path">./Small.jpg</stringProp>
                   <stringProp name="File.paramname">imagefile</stringProp>
                 </elementProp>
               </collectionProp>

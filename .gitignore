@@ -8,3 +8,9 @@ Jenkinsfile-local
 
 # ignore all __pychache__ directories
 **/__pycache__/
+
+# Emacs files
+*~
+
+# Jmeter files
+jmeter.log
