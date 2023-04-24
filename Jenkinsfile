@@ -37,7 +37,7 @@ pipeline {
         stage('Pushing to DockerHub') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')])
+                    withCredentials([usernamePassword(credentialsId: 'acatnamedsummer', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) 
                     {
                         sh 'sudo docker login -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD'
                         sh 'sudo docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG'
@@ -55,6 +55,8 @@ pipeline {
                 // ssh into the remote host and create a .env file
                 sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "rm -f .env"'
                 sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "touch .env"'
+                sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "rm -rf .benchmarks"'
+
                 // add photogallery environment variables to the .env file
                 sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" >> .env"'
                 sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "echo "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> .env"'
@@ -68,26 +70,55 @@ pipeline {
                 sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "MYSQL_ROOT_PASSWORD=\'${DB_PASSWORD}\' MYSQL_DATABASE=\'${DB_NAME}\' sh ./deploy.sh"'
             }
         }
-
-        stage ('Run JMeter') {
+        
+        stage('Benchmark Test') {
+            // run the unit tests
+            steps {
+                script{
+                    sh 'sleep 10 && ssh ${REMOTE_USER}@${REMOTE_HOST} "docker exec -t photogallery sh -c \"pytest --benchmark-autosave\""'
+                    sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "docker cp photogallery:/app/.benchmarks ."'
+                    //sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "mkdir .benchmarks/jmeter"'
+                }
+            }
+        }
+        
+         stage ('Run JMeter') {
             steps {
                 // copy the deploy.sh script to the remote host
                 sh 'scp Photo-Gallery-Test-Plan.jmx ${REMOTE_USER}@${REMOTE_HOST}:~/'
                 sh 'scp run_jmeter.sh ${REMOTE_USER}@${REMOTE_HOST}:~/'
-                sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "chmod +x run_jmeter.sh"'
+                sh 'scp *.jpg ${REMOTE_USER}@${REMOTE_HOST}:~/'
+                sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "chmod +x run_jmeter.sh"' 
                 sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "./run_jmeter.sh"'
-
+                
+                
             }
         }
-    }
-     stage('Benchmark Test') {
-            // run the unit tests
+
+        stage('Uploading Test Results') {
             steps {
-                script{
-                    sh "python -m pytest test_sample.py"
+                script {
+                    //sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "docker cp photogallery:/app/.benchmarks ."'
+                    sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "scp -r ~/.benchmarks ubuntu@3.22.222.150:."'
+                    sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "scp -r ~/data.csv ubuntu@3.22.222.150:."'
+                    sh 'sudo rm -rf /home/ubuntu/benchmarks'
+                    sh 'sudo mv /home/ubuntu/.benchmarks /home/ubuntu/benchmarks'
+                    sh 'sudo chmod -R 777 /home/ubuntu/benchmarks/'
+                    sh 'sudo cp /home/ubuntu/data.csv .'
+                    sh 'sudo zip -r jmeter.zip /home/ubuntu/benchmarks/jmeter'
+                    sh 'for i in `sudo ls /home/ubuntu/benchmarks/Linux-CPython-3.9-64bit/ | grep json` ; do sudo cp /home/ubuntu/benchmarks/Linux-CPython-3.9-64bit/$i one.json; done'
                 }
             }
         }
+        
+       
+    }
 
+    post {
+        always {
+            archiveArtifacts artifacts: 'one.json', fingerprint: true
+            archiveArtifacts artifacts: 'jmeter.zip', fingerprint: true
+            archiveArtifacts artifacts: 'data.csv', fingerprint: true
+        }
     }
 }
