@@ -74,6 +74,7 @@ pipeline {
                 // copy the deploy.sh script to the remote host
                 sh 'scp Photo-Gallery-Test-Plan.jmx ${REMOTE_USER}@${REMOTE_HOST}:~/'
                 sh 'scp run_jmeter.sh ${REMOTE_USER}@${REMOTE_HOST}:~/'
+                sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "chmod +x run_jmeter.sh"'
                 sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "./run_jmeter.sh"'
 
             }
