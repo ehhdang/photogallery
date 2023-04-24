@@ -37,7 +37,7 @@ pipeline {
         stage('Pushing to DockerHub') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) 
+                    withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')])
                     {
                         sh 'sudo docker login -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD'
                         sh 'sudo docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG'
@@ -67,6 +67,18 @@ pipeline {
                 sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "chmod +x deploy.sh"'
                 sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "MYSQL_ROOT_PASSWORD=\'${DB_PASSWORD}\' MYSQL_DATABASE=\'${DB_NAME}\' sh ./deploy.sh"'
             }
+        }
+
+        stage ('Run JMeter') {
+            steps {
+                // copy the deploy.sh script to the remote host
+                sh 'scp Photo-Gallery-Test-Plan.jmx ${REMOTE_USER}@${REMOTE_HOST}:~/'
+                sh 'scp run_jmeter.sh ${REMOTE_USER}@${REMOTE_HOST}:~/'
+                sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "chmod +x run_jmeter.sh"'
+                sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "./run_jmeter.sh"'
+
+            }
+        }
     }
      stage('Benchmark Test') {
             // run the unit tests
