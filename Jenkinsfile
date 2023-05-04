@@ -99,8 +99,8 @@ pipeline {
             steps {
                 script {
                     //sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "docker cp photogallery:/app/.benchmarks ."'
-                    sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "scp -r ~/.benchmarks ubuntu@3.22.222.150:."'
-                    sh 'ssh ${REMOTE_USER}@${REMOTE_HOST} "scp -r ~/data.csv ubuntu@3.22.222.150:."'
+                    sh 'scp -r ${REMOTE_USER}@${REMOTE_HOST}:~/.benchmarks .'
+                    sh 'scp -r ${REMOTE_USER}@${REMOTE_HOST}:~/data.csv .'
                     sh 'sudo rm -rf /home/ubuntu/benchmarks'
                     sh 'sudo mv /home/ubuntu/.benchmarks /home/ubuntu/benchmarks'
                     sh 'sudo chmod -R 777 /home/ubuntu/benchmarks/'
